@@ -1,132 +1,170 @@
-# PDF Summarization App with OCR and React Frontend
+# PDF Summarizer
 
-This project is a simple yet powerful web application that helps you upload PDF documents and get concise summaries. It works even with scanned PDFs by using OCR to extract text. The backend is built with Python and Flask, while the frontend is a smooth React app designed for ease of use.
+Secure full-stack web application built with Python Flask backend and React frontend that allows users to upload PDF documents, extract and translate text, generate summaries, and perform metadata search.
 
-***
+## Table of Contents
 
-## What It Does
+- Project Overview  
+- Features  
+- Technology Stack  
+- Setup and Installation  
+- Usage   
+- API Endpoints  
+- Project Structure  
+- Development Notes  
+- Troubleshooting  
+- Future Enhancements  
+- License  
 
-- Extracts text from PDFs using PyMuPDF, and applies OCR via Tesseract when needed (perfect for scanned documents).
-- Summarizes the extracted content using a smart algorithm to capture the most important points.
-- Lets you upload multiple PDFs at once.
-- Gives you the option to download all summaries in one handy JSON file.
-- Features a welcoming React landing page and a clean, user-friendly interface.
-- Structured Flask backend with clear separation of concerns + easy CORS support for frontend-backend communication.
+## Project Overview
 
-***
+This application enables secure uploading of PDF documents. Backend extracts text, uses AI-powered translation to convert text to English (if needed), and summarizes the content. Users can search uploaded files by case number, client name, or upload date and download encrypted files or JSON summaries.
 
-## Tech Stack
+## Features
 
-- **Backend:** Python, Flask, PyMuPDF, pytesseract (Tesseract OCR), NLTK, Sumy summarization, scikit-learn, NumPy
-- **Frontend:** React, JavaScript, CSS
-- **NOTE:** You’ll need to install Tesseract OCR separately on your system.
+- Secure encrypted file uploads (PDF, DOCX, JPG/PNG)
+- PDF text extraction with OCR support
+- Neural machine translation to English using Google Cloud Translation API
+- Text summarization using NLP libraries
+- Search uploaded metadata with multi-parameter filters
+- Download encrypted original files and JSON summaries
+- Modular React frontend with intuitive UI and responsive design
 
-***
+## Technology Stack
 
-## How to Get Started
+| Layer          | Technology                                  |
+|----------------|---------------------------------------------|
+| Backend        | Python, Flask                             |
+| Database       | SQLite                                   |
+| Translation    | Google Cloud Translation API             |
+| Text Extraction| PyMuPDF, pytesseract                      |
+| Summarization  | NLTK, Sumy                               |
+| Encryption     | cryptography (AES encryption)             |
+| Frontend       | React, JavaScript, HTML5, CSS3             |
 
-### Setting up the Backend
+## Setup and Installation
 
-1.Go to the `backend` folder.
-2. (Optional but recommended) Create a virtual environment and activate it:
+### Prerequisites
 
-```bash
-python -m venv venv
-# Windows:
-venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
-```
+- Python 3.11+
+- Node.js 16+ and npm
+- Google Cloud account (for translation API)
+- Git for versioning
 
-3. Install the Python packages this project needs:
+### Backend Setup
 
-```bash
-pip install -r requirements.txt
-```
+1. Clone the repository
 
-4. Install Tesseract OCR on your machine:
+    ```
+    git clone https://github.com/yourusername/PDF_Summarizer.git
+    cd PDF_Summarizer/backend
+    ```
 
-- Windows: Download from the official site and install.
-- macOS: Run `brew install tesseract`
-- Linux (e.g. Ubuntu): Run `sudo apt-get install tesseract-ocr`
+2. Create and activate a Python virtual environment
 
-5. Make sure to update the Tesseract path in `core/extractor.py` if your installation is in a different folder.
-6. Start the Flask server:
+    ```
+    python -m venv venv
+    # Windows
+    .\venv\Scripts\activate
+    # macOS/Linux
+    source venv/bin/activate
+    ```
 
-```bash
-python app.py
-```
+3. Install Python dependencies
 
-Your backend will start on `http://127.0.0.1:5000`.
+    ```
+    pip install -r requirements.txt
+    ```
 
-***
+4. Set Google Cloud Credentials environment variable
 
-### Setting up the Frontend
+    ```
+    export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/service-account.json"
+    ```
 
-1. Head to the frontend folder (or the root if combined).
-2. Install the npm packages:
+5. Run the Flask backend
 
-```bash
-npm install
-# or
-yarn
-```
+    ```
+    python app.py
+    ```
 
-3. Run the React app:
+### Frontend Setup
 
-```bash
-npm start
-# or
-yarn start
-```
+1. Change directory to frontend
 
-Your browser will open at `http://localhost:3000`.
+    ```
+    cd ../frontend
+    ```
 
-***
+2. Install npm dependencies
 
-## Using The App
+    ```
+    npm install
+    ```
 
-1. When you open the app, you’ll see a friendly landing page. Click **Get Started** to jump in.
-2. Select one or more PDF files to upload from the TestPDFs folder or upload a PDF from the local storage.
-3. Hit the **Upload and Summarize** button and wait a moment for it to process.
-4. Once done, you’ll see both the extracted text and summary for each document.
-5. You can also download a JSON file with all the summaries gathered for easy reference or further use.
+3. Start React development server
 
-***
+    ```
+    npm start
+    ```
 
-## How the Code is Organized
+4. Open http://localhost:3000 in a web browser
 
-```
-backend/
-  ├── app.py                 # Main server app setup
-  ├── core/
-  │    ├── extractor.py      # PDF text extraction and cleaning
-  │    └── summarizer.py     # Extracts keywords & summarizes content
-  ├── routes/
-  │    └── upload_download_routes.py  # API endpoints for uploading and downloading
-  ├── uploads/               # Where PDFs and summary files live
-  └── requirements.txt       # Python deps
+## Usage
 
-frontend/
-  ├── src/
-  │    ├── App.js            # Main React component
-  │    ├── LandingPage.js    # Welcome page component
-  │    ├── index.css         # Global styles
-  │    └── App.css           # Component-specific styles
-  └── package.json           # Frontend deps & scripts
-```
+### Upload Document and Summarize
 
-***
+- Go to "Upload Documents" tab.
+- Enter case number, client name, and upload date.
+- Choose one or multiple PDF documents.
+- Click **Upload and Summarize**.
+- View extracted structured data and summaries.
+- Download encrypted files or summary JSON.
 
-## A Few Tips
+### Search Metadata
 
-- The uploads folder is inside the backend directory so everything stays tidy.
-- Use TestPDFs for testing, story 1 contains text, and story2 contains photos of text.
-- Double-check the Tesseract OCR path in `extractor.py` matches your system installation.
-- The backend uses CORS so the frontend can talk to it without trouble.
-- Remember OCR can take a bit longer, especially on large or image-heavy PDFs.
-- If you see any errors, check both the frontend console and backend logs for clues.
+- Select "Search Metadata" tab.
+- Choose to search by case number or upload date.
+- Enter search parameters (optional client name).
+- Click **Search**.
+- View matching results and download files.
 
-***
+## API Endpoints
 
-## FEEL FREE TO CONTACT FOR ANY SUGGESTIONS / ADVICE.
+| Endpoint                     | Method | Description                                     |
+|------------------------------|--------|-------------------------------------------------|
+| `/secure-upload`              | POST   | Upload files with metadata, encrypt & summarize |
+| `/secure-download/<file>`     | GET    | Download decrypted original file                 |
+| `/secure-metadata-search`     | GET    | Search files by case number, client name, date  |
+| `/download-summary/<case_no>` | GET    | Download summary JSON for a case                  |
+
+
+## Development Notes
+
+- Modular architecture separates concerns clearly.
+- Translation uses Google Cloud Translation API for accuracy.
+- Encryption uses AES symmetric encryption in Python.
+- Text extraction supports images via OCR with Tesseract.
+- Frontend uses React hooks and components with clean and responsive UI.
+- Backend persists metadata in lightweight SQLite DB.
+- Use `.env` or environment vars to manage sensitive config.
+
+## Troubleshooting
+
+- Ensure Google credentials env variable is set before running backend.
+- Review backend logs if uploads or translation fail.
+- Refresh frontend after code changes.
+- Clear `node_modules` and reinstall if React errors persist.
+- Check network requests & errors in browser dev tools.
+
+## Future Enhancements
+
+- User authentication and multi-user support.
+- Improved extraction using ML models.
+- Support more document types and batch processing.
+- Production deployment with Docker and CI/CD.
+- Add analytics and advanced reporting.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
