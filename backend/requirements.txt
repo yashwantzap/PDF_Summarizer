@@ -8,3 +8,6 @@ sumy
 scikit-learn
 numpy
 Werkzeug
+cryptography
+googletrans==4.0.0-rc1
+google-cloud-translate
